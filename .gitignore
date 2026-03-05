@@ -427,3 +427,7 @@ qdrant_store/*
 # develop doc
 dev_doc/
 dev_doc/*
+
+# python environment
+venv/
+venv/*
