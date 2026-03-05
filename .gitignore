@@ -416,3 +416,14 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# user file
+data/
+data/*
+
+qdrant_store/
+qdrant_store/*
+
+# develop doc
+dev_doc/
+dev_doc/*
