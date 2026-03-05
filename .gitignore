@@ -431,3 +431,7 @@ dev_doc/*
 # python environment
 venv/
 venv/*
+
+# test
+test/
+test/*
