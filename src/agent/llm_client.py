@@ -10,7 +10,7 @@ class LLMClient:
         self.api_key = api_key
         self.api_base = api_base
         self.abilities_list = self._get_abilities_list()
-        self.system_prompt = self._get_system_prompt() 
+        self.system_prompt = self._get_system_prompt()
         
         self.assistant_prompt = '' # Agent的系统提示词等待Agent示例创建代码完成再编写
         self.context = [] # Agent的上下文短期对话记录等待Message模块完成再编写
