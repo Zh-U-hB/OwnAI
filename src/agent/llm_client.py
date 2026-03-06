@@ -8,6 +8,8 @@ class LLMClient:
         self.model_name = model_name
         self.api_key = api_key
         self.api_base = api_base
+        self.system_prompt = self._get_system_prompt() 
+        self.tools_list = self._get_tools_list()
         self.assistant_prompt = '' # Agent的系统提示词等待Agent示例创建代码完成再编写
         self.context = [] # Agent的上下文短期对话记录等待Message模块完成再编写
         self.history_file_path = '' # Agent的上下文长期对话记录文件路径等待Message模块完成再编写
@@ -21,6 +23,26 @@ class LLMClient:
         messages = self._assemble_message(self.assistant_prompt, self.context, user_prompt)
         response = self._send_message(messages)
         return response
+
+    def _get_system_prompt(self) -> str:
+        """
+        获取系统提示词。
+        :return: 系统提示词
+        """
+        system_prompt = f"""
+        Your available tools are: {self.tools_list}
+        Your long-term conversation history is stored in the folder {self.history_file_path}, each file represents a conversation segment, with the filename format: history_<number>.json, where higher numbers indicate newer conversations.
+        In general, you don't need to check long-term conversation history unless the user explicitly requests it.
+        """
+        return system_prompt
+
+    
+    def _get_tools_list(self) -> list:
+        """
+        获取工具列表。
+        :return: 工具列表
+        """
+        pass
 
     def _send_message(self, messages: list) -> str:
         """
@@ -48,8 +70,8 @@ class LLMClient:
         :return: 组装后的消息列表
         """
         messages = []
-        if assistant_prompt:
-            messages.append({"role": "system", "content": assistant_prompt})
+        if self.system_prompt:
+            messages.append({"role": "system", "content": f"{self.system_prompt}\n{assistant_prompt}"})
         if context:
             context_obj = {
                 "type": "context",
@@ -60,4 +82,5 @@ class LLMClient:
         if user_prompt:
             messages.append({"role": "user", "content": user_prompt})
         return messages
+
 
